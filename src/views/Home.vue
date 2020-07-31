@@ -244,9 +244,15 @@ export default {
         }
 
         .article-publish {
+<<<<<<< HEAD
           overflow: hidden;
           .publish-title {
             float: right;
+=======
+          display: flex;
+          justify-content: flex-end;
+          .publish-title {
+>>>>>>> dev
             display: inline-block;
             width: 120px;
             height: 30px;
