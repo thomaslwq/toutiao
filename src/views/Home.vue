@@ -244,7 +244,6 @@ export default {
         }
 
         .article-publish {
-
           display: flex;
           justify-content: flex-end;
             display: inline-block;
@@ -255,7 +254,7 @@ export default {
             color: white;
             background-color: #ea4245;
           }
-        }
+        
       }
     }
 
