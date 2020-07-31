@@ -25,20 +25,21 @@
         <!-- 显示发头条的编辑部分的开始 -->
         <div class="content-middle-mid">
           <section v-show="activeTab=='tt'">
-            <textarea name id cols="30" 
-            v-model="content"
-            placeholder="写点什么吧"
-            rows="10"></textarea>
+            <textarea name id cols="30" v-model="content" placeholder="写点什么吧" rows="10"></textarea>
             <section class="mid-bottom">
               <section class="left">
                 <span class="title">图片</span>
               </section>
-              <section class="right"
-              @click.stop="publishTT"
-              >发布</section>
+              <section class="right" @click.stop="publishTT">发布</section>
             </section>
           </section>
-          <section v-show="activeTab=='article'">写文章</section>
+          <section class="article-content" v-show="activeTab=='article'">
+            <input class="article-input" v-model="title" type="text" />
+            <vue-editor id="editor" v-model="html_content"></vue-editor>
+            <section class="article-publish">
+              <span class="publish-title" @click="publishArticle">发布</span>
+            </section>
+          </section>
         </div>
         <!-- 显示发头条的编辑部分的 -->
         <div class="content-middle-bottom"></div>
@@ -52,25 +53,28 @@
 <script>
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
-
+import { VueEditor } from "vue2-editor";
 import Navigator from "../components/Navigator";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
     Navigator,
+    VueEditor,
   },
   data() {
     //这里存放数据
     return {
-      content:"",// 头条里面的内容
+      content: "", // 头条里面的内容
       // 切换 的tab 栏的数据
       // type 是切换的类型
       tabs: [
         { id: 1, text: "发微头条", type: "tt" },
         { id: 2, text: "写文章", type: "article" },
       ],
+      title: "", //标题
+      html_content: "", // 富文本编辑器内容
       // 当前激活的tab
-      activeTab: "tt", // tt 头条 article 文章
+      activeTab: "article", // tt 头条 article 文章
     };
   },
   //监听属性 类似于data概念
@@ -79,25 +83,51 @@ export default {
   watch: {},
   //方法集合
   methods: {
-    // auth_token KwiVWLCxXax3rRcVsmgX7shQGhtBtXnS
-    publishTT:function(){
-      let content = this.content;
-      if(!content){ // 内容为空的情况下
-      // todo  换成 elementUI message 
-        alert("输入不能为空！");
+    publishArticle: function () {
+      let title = this.title;
+      let html_content = this.html_content;
+      if (!title || !html_content) {
+        // 内容为空的情况下
+        // todo  换成 elementUI message
+        this.$message({
+          message: "输入不能为空！",
+          type: "warning",
+        });
         return false;
       }
-      this.$axios.post("/createTT",{
-        content:content,
-        imgs:"",
-        // oauth_token:"KwiVWLCxXax3rRcVsmgX7shQGhtBtXnS"
+      this.$axios.post("/createArticle",{
+        content:html_content,
+        img:"",
+        title:title
       }).then(res=>{
-        console.log(res);
-      }).catch(err=>{
-        console.log(err);
-      })
+        console.log(res)
+      }).catch(err=>console.log(err))
+    },
+    // auth_token KwiVWLCxXax3rRcVsmgX7shQGhtBtXnS
+    publishTT: function () {
+      let content = this.content;
+      if (!content) {
+        // 内容为空的情况下
+        // todo  换成 elementUI message
+        this.$message({
+          message: "输入不能为空！",
+          type: "warning",
+        });
+        return false;
+      }
+      this.$axios
+        .post("/createTT", {
+          content: content,
+          imgs: "",
+          // oauth_token:"KwiVWLCxXax3rRcVsmgX7shQGhtBtXnS"
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       this.content = "";
-
     },
     // 切换激活的 tab
     handleTabChange: function (activeTab) {
@@ -185,7 +215,7 @@ export default {
 
         section.mid-bottom {
           display: flex;
-          height:40px;
+          height: 40px;
           align-items: center;
           justify-content: space-between;
           section.left {
@@ -193,12 +223,37 @@ export default {
             }
           }
           section.right {
-            height:30px;
+            height: 30px;
             line-height: 30px;
-            text-align:center;
+            text-align: center;
             width: 100px;
             background-color: #ea4245;
-            color:white
+            color: white;
+          }
+        }
+      }
+      .article-content {
+        margin-top: 10px;
+        input.article-input {
+          width: 100%;
+          height: 30px;
+        }
+
+        #editor {
+          width: 100%;
+        }
+
+        .article-publish {
+          overflow: hidden;
+          .publish-title {
+            float: right;
+            display: inline-block;
+            width: 120px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color: white;
+            background-color: #ea4245;
           }
         }
       }
