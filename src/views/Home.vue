@@ -244,9 +244,9 @@ export default {
         }
 
         .article-publish {
-          overflow: hidden;
+          display: flex;
+          justify-content: flex-end;
           .publish-title {
-            float: right;
             display: inline-block;
             width: 120px;
             height: 30px;
