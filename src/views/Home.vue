@@ -22,11 +22,11 @@
 //这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 //例如：import 《组件名称》 from '《组件路径》';
 
-import Navigator from "../components/Navigator"
+import Navigator from "../components/Navigator";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {
-    Navigator
+    Navigator,
   },
   data() {
     //这里存放数据
@@ -41,7 +41,32 @@ export default {
   //生命周期 - 创建完成（可以访问当前this实例）
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
+  async mounted() {
+    // // http://tt.linweiqin.com/api/tt/getArticles?lastid=0&&type="TT"&&page=1&&number=20
+    // this.$axios
+    //   .get("http://tt.linweiqin.com/api/tt/getArticles", {
+    //     params: {
+    //       lastid: 0,
+    //       type: "TT",
+    //       page: 1,
+    //       number: 20,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => console.log(err));
+    let res = await this.$axios.get("/getArticles", {
+        params: {
+          lastid: 0,
+          type: "TT",
+          page: 1,
+          number: 20,
+        },
+      })
+    console.log(res)
+      
+  },
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
   beforeUpdate() {}, //生命周期 - 更新之前
@@ -56,26 +81,26 @@ export default {
   height: 30px;
   background-color: #000000;
   line-height: 30px;
-  padding-left:5px;
+  padding-left: 5px;
   span {
-    color:white;
+    color: white;
   }
 }
 .tt-home-content {
-   width:80vw;
-   margin-right: 10vw;
-   margin-left: 10vw;
-   display:flex;
+  width: 80vw;
+  margin-right: 10vw;
+  margin-left: 10vw;
+  display: flex;
   .home-content-left {
-    flex:1;
+    flex: 1;
   }
 
   .home-content-middle {
-    flex:3;
+    flex: 3;
   }
 
   .home-content-right {
-    flex:2;
+    flex: 2;
   }
 }
 </style>
