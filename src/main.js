@@ -10,6 +10,9 @@ import store from './store' // ./store/index.js
 import axios from "./common/myaxios"
 //a.2 在Vue的原型上添加 $axios
 Vue.prototype.$axios = axios;
+// 引入 element-ui 组件库
+import { Message } from "element-ui"
+Vue.prototype.$message = Message;
 
 // Vue.use(HighchartsVue)
 
