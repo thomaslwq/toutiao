@@ -95,13 +95,16 @@ export default {
         });
         return false;
       }
-      this.$axios.post("/createArticle",{
-        content:html_content,
-        img:"",
-        title:title
-      }).then(res=>{
-        console.log(res)
-      }).catch(err=>console.log(err))
+      this.$axios
+        .post("/createArticle", {
+          content: html_content,
+          img: "",
+          title: title,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
     },
     // auth_token KwiVWLCxXax3rRcVsmgX7shQGhtBtXnS
     publishTT: function () {
@@ -244,9 +247,9 @@ export default {
         }
 
         .article-publish {
-
           display: flex;
           justify-content: flex-end;
+          .publish-title {
             display: inline-block;
             width: 120px;
             height: 30px;
