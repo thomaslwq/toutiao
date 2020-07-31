@@ -244,9 +244,9 @@ export default {
         }
 
         .article-publish {
+
           display: flex;
           justify-content: flex-end;
-          .publish-title {
             display: inline-block;
             width: 120px;
             height: 30px;
