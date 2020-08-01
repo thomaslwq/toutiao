@@ -5,4 +5,10 @@ module.exports = {
     // devServer: {
     //     proxy: 'http://tt.linweiqin.com/api/tt/'
     // }
+    // devServer: {
+    //     proxy: 'http://v.juhe.cn/toutiao/index'
+    // }
+    // devServer: {
+    //     proxy: 'http://localhost:9000'
+    // }
 }

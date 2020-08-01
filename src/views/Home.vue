@@ -35,7 +35,12 @@
           </section>
           <section class="article-content" v-show="activeTab=='article'">
             <input class="article-input" v-model="title" type="text" />
-            <vue-editor id="editor" v-model="html_content"></vue-editor>
+            <vue-editor
+              id="editor"
+              v-model="html_content"
+              use-custom-image-handler
+              @image-added="handleImageAdded"
+            ></vue-editor>
             <section class="article-publish">
               <span class="publish-title" @click="publishArticle">发布</span>
             </section>
@@ -83,6 +88,30 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    // 添加图片上传的方式
+    handleImageAdded: function (f, Editor, cursorLocation, resetUploader) {
+      // An example of using FormData
+      // NOTE: Your key could be different such as:
+      // formData.append('file', file)
+      // 构建form表单数据
+      var formData = new FormData();
+      // 往表单数据中 填充 file:file 数据
+      formData.append("file", f);
+      this.$axios({
+        url: "/aliossUpload",
+        method: "POST",
+        data: formData,
+      })
+        .then((res) => {
+              let url = res.url; // Get url from response
+              // Editor 是富文本编辑器的实例
+              Editor.insertEmbed(cursorLocation, "image", url);
+              resetUploader();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     publishArticle: function () {
       let title = this.title;
       let html_content = this.html_content;
